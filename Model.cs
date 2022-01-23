@@ -15,19 +15,26 @@ namespace AddressBookApp
 		public string State { get; set; }
 		public string Zip { get; set; }
 		public string Number { get; set; }
-		public Model(string firstName, string lastName, string address, string city, string state, string zip, string number)
+		public Model(Dictionary<string, string> kwargs)
 		{
-			this.FirstName = firstName;
-			this.LastName = lastName;
-			this.Address = address;
-			this.City = city;
-			this.State = state;
-			this.Zip = zip;
-			this.Number = number;
+			this.FirstName = kwargs["firstName"];
+			this.LastName = kwargs["lastName"];
+			this.Address = kwargs["address"];
+			this.City = kwargs["city"];
+			this.State = kwargs["state"];
+			this.Zip = kwargs["zip"];
+			this.Number = kwargs["number"];
 		}
         public override string ToString()
         {
-            return $"AddressBook: {this.FirstName}, {this.LastName}, {this.Number}, {this.Address}, {this.City}, {this.State}, {this.Zip}, {this.Number}";
+            return $"AddressBook: " +
+				$"First Name = {this.FirstName}, " +
+				$"Last Name = {this.LastName}, " +
+				$"Address = {this.Address}, " +
+				$"City = {this.City}, " +
+				$"State = {this.State}, " +
+				$"Zip = {this.Zip}, " +
+				$"Phone = {this.Number}";
 		}
     }
 }
