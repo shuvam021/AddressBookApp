@@ -6,6 +6,33 @@ namespace AddressBookApp
 {
     internal class Program
 	{
+        public static void TempData(Controller book)
+        {
+            var data1 = new Dictionary<string, string>()
+                        {
+                            { "firstName", "John" },
+                            { "lastName", "Doe" },
+                            { "address", "Knowhere" },
+                            { "city", "Knowhere" },
+                            { "state", "Knowhere" },
+                            { "zip", "123456" },
+                            { "number", "1234567890" }
+                        };
+            var newAddress1 = new Model(data1);
+            book.Create(newAddress1);
+            var data2 = new Dictionary<string, string>()
+                        {
+                            { "firstName", "Jane" },
+                            { "lastName", "Doe" },
+                            { "address", "Knowhere" },
+                            { "city", "Knowhere" },
+                            { "state", "Knowhere" },
+                            { "zip", "798745" },
+                            { "number", "9876543210" }
+                        };
+            var newAddress2 = new Model(data2);
+            book.Create(newAddress2);
+        }
         public static Dictionary<string, string> CreateOrUpdateInputs()
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
@@ -25,7 +52,7 @@ namespace AddressBookApp
             data["number"] = Console.ReadLine();
             return data;
         }
-		static void Main(string[] args)
+        static void Main(string[] args)
 		{
             Console.WriteLine("#########################################");
             Console.WriteLine("Hello From the Console AddressBook app!");
@@ -34,11 +61,13 @@ namespace AddressBookApp
             Console.WriteLine("1. View all Address");
             Console.WriteLine("2. Add Address");
             Console.WriteLine("3. Edit Address");
+            Console.WriteLine("4. Delete Address");
             Console.WriteLine("x. Press to exit");
             Console.Write("Choice: ");
             var userInput = Console.ReadLine();
             var addressBook = new Controller();
             Dictionary<string, string> data = new Dictionary<string, string>();
+            string searchPhrase;
             while (true)
             {
                 switch (userInput)
@@ -47,16 +76,23 @@ namespace AddressBookApp
                         addressBook.View();
                         break;
                     case "2":
-                        data = CreateOrUpdateInputs();
-                        var newAddress = new Model(data);
-                        addressBook.Create(newAddress);
+                        //data = CreateOrUpdateInputs();
+                        //var newAddress = new Model(data);
+                        //addressBook.Create(newAddress);
+                        TempData(addressBook);
                         break;
                     case "3":
-                        Console.WriteLine("Enter First Name for update address: ");
-                        var searchPhrase = Console.ReadLine();
+                        Console.Write("Enter First Name for update address: ");
+                        searchPhrase = Console.ReadLine();
                         data = CreateOrUpdateInputs();
                         var updateAddress = new Model(data);
                         addressBook.Update(searchPhrase, updateAddress);
+                        break;
+                    case "4":
+                        Console.Write("Enter First Name for deleting address: ");
+                        searchPhrase = Console.ReadLine();
+                        Console.WriteLine("are you suer? [Y]es/[A]ny-key: ");
+                        if (Console.ReadLine().ToLower() == "y") addressBook.Delete(searchPhrase);
                         break;
                     case "x":
                         return;

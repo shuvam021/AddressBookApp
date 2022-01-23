@@ -11,6 +11,12 @@ namespace AddressBookApp
 
         /// <summary>Creates new Address Instance.</summary>
         /// <param name="arg">arg is instance Model</param>
+        private Model search(string searchPharase)
+        {
+            var itemList = _addressList.Where(c => c.FirstName.Contains(searchPharase));
+            if (itemList.Count() == 0) return null;
+            return itemList.First();
+        }
         public void Create(Model arg)
         {
             _addressList.Add(arg);
@@ -28,8 +34,9 @@ namespace AddressBookApp
         /// <param name="arg">The argument is an instance of Model class.</param>
         public void Update(string searchPharase, Model arg)
         {
-            try {
-                var item = _addressList.Where(c => c.FirstName.Contains(searchPharase)).First();
+            var item = search(searchPharase);
+            if (item != null)
+            {
                 if(arg.FirstName != "") item.FirstName = arg.FirstName;
                 if (arg.LastName != "") item.LastName = arg.LastName;
                 if (arg.Address != "") item.Address = arg.Address;
@@ -37,9 +44,18 @@ namespace AddressBookApp
                 if (arg.City != "") item.State = arg.State;
                 if (arg.Zip != "") item.Zip = arg.Zip;
                 if (arg.Number != "") item.Number = arg.Number;
+                Console.WriteLine("\t>>>Address Updated...");
             }
-            catch (InvalidOperationException e) { Console.WriteLine(e); }
-            catch (Exception e) { Console.WriteLine(e); }
+            else Console.WriteLine("\t>>>Not found\n");
+        }
+        public void Delete(string searchPharase)
+        {
+            var item = search(searchPharase);
+            if (item != null) {
+                _addressList.Remove(item);
+                Console.WriteLine("\t>>>Address Deleted...");
+            }
+            else Console.WriteLine("\t>>>Not found\n");
         }
     }
 }
