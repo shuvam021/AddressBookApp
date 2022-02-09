@@ -7,52 +7,69 @@ namespace AddressBookApp
     /// <summary>Controller for Address book App. Containd all methods to perform operation</summary>
     internal class Controller
     {
-        private List<Model> _addressList { get; set; } = new List<Model>();
+        private Dictionary<string, Model> AddressList { get; set; } = new Dictionary<string, Model>();
+
+        /// <summary>Search Address book for matching first name.</summary>
+        /// <param name="searchPhrase"></param>
+        /// <returns>Model instance</returns>
+        private KeyValuePair<string, Model> Search(string searchPhrase)
+        {
+            var itemList = AddressList
+                .Where(c => c.Value.FirstName.Contains(searchPhrase))
+                .DefaultIfEmpty()
+                .First();
+            return itemList;
+        }
 
         /// <summary>Creates new Address Instance.</summary>
         /// <param name="arg">arg is instance Model</param>
-        private Model search(string searchPharase)
-        {
-            var itemList = _addressList.Where(c => c.FirstName.Contains(searchPharase));
-            if (itemList.Count() == 0) return null;
-            return itemList.First();
-        }
         public void Create(Model arg)
         {
-            _addressList.Add(arg);
+            string name = $"{arg.FirstName} {arg.LastName}";
+            if(Search(arg.FirstName).Key == null)
+                AddressList[name]= arg;
+            else
+                Console.WriteLine("Please Try new name");
         }
+
         /// <summary>Views all address this instance.</summary>
         public void View()
         {
-            foreach (var item in _addressList)
+            foreach (var item in AddressList)
             {
-                Console.WriteLine(item);
+                Console.WriteLine($"{item.Key}: {item.Value}");
             }
         }
-        /// <summary>Updates the specified search pharase.</summary>
-        /// <param name="searchPharase">The search pharase is for find item to edit.</param>
+
+
+        /// <summary>Updates the specified search phrase.</summary>
+        /// <param name="searchPhrase">The search phrase is for find item to edit.</param>
         /// <param name="arg">The argument is an instance of Model class.</param>
-        public void Update(string searchPharase, Model arg)
+        public void Update(string searchPhrase, Model arg)
         {
-            var item = search(searchPharase);
-            if (item != null)
+            var item = Search(searchPhrase);
+            if (item.Key != null)
             {
-                if(arg.FirstName != "") item.FirstName = arg.FirstName;
-                if (arg.LastName != "") item.LastName = arg.LastName;
-                if (arg.Address != "") item.Address = arg.Address;
-                if (arg.City != "") item.City = arg.City;
-                if (arg.City != "") item.State = arg.State;
-                if (arg.Zip != "") item.Zip = arg.Zip;
-                if (arg.Number != "") item.Number = arg.Number;
+                if (arg.FirstName != "") item.Value.FirstName = arg.FirstName;
+                if (arg.LastName != "") item.Value.LastName = arg.LastName;
+                if (arg.Address != "") item.Value.Address = arg.Address;
+                if (arg.City != "") item.Value.City = arg.City;
+                if (arg.City != "") item.Value.State = arg.State;
+                if (arg.Zip != "") item.Value.Zip = arg.Zip;
+                if (arg.Number != "") item.Value.Number = arg.Number;
                 Console.WriteLine("\t>>>Address Updated...");
             }
             else Console.WriteLine("\t>>>Not found\n");
         }
-        public void Delete(string searchPharase)
+
+        /// <summary>Delete the specified search phrase.</summary>
+        /// <param name="searchPhrase">The search phrase is for find item to edit.</param>
+        public void Delete(string searchPhrase)
         {
-            var item = search(searchPharase);
-            if (item != null) {
-                _addressList.Remove(item);
+            var item = Search(searchPhrase);
+            if (item.Key != null)
+            {
+                AddressList.Remove(item.Key);
                 Console.WriteLine("\t>>>Address Deleted...");
             }
             else Console.WriteLine("\t>>>Not found\n");
