@@ -60,6 +60,7 @@ namespace AddressBookApp
             Console.WriteLine("3. Edit Address");
             Console.WriteLine("4. Delete Address");
             Console.WriteLine("5. Search by Location");
+            Console.WriteLine("6. Count no. of Address(i.e. Search by Location)");
             Console.Write("Choice or E[x]it: ");
         }
         static void Main(string[] args)
@@ -103,6 +104,11 @@ namespace AddressBookApp
                         Console.Write("Enter State/City Name for Searching address: ");
                         searchPhrase = Console.ReadLine();
                         addressBook.View(addressBook.SearchByLocation(searchPhrase));
+                        break;
+                    case "6":
+                        Console.Write("Enter State/City Name for Count address: ");
+                        searchPhrase = Console.ReadLine();
+                        Console.WriteLine(addressBook.CountContact(searchPhrase));
                         break;
                     case "x":
                         return;

@@ -30,6 +30,13 @@ namespace AddressBookApp
             }
             return result;
         }
+        /// <summary>Count found Contact details</summary>
+        /// <param name="searchPhrase">State or City</param>
+        /// <returns>Count searched value</returns>
+        public int CountContact(string searchPhrase)
+        {
+            return SearchByLocation(searchPhrase).Count;
+        }
 
         /// <summary>Creates new Address Instance.</summary>
         /// <param name="arg">arg is instance Model</param>
