@@ -20,14 +20,26 @@ namespace AddressBookApp
                 .First();
             return itemList;
         }
+        public Dictionary<string, Model> SearchByLocation(string searchPhrase)
+        {
+            var result = new Dictionary<string, Model>();
+            foreach (var (key, value) in AddressList)
+            {
+                if (value.State.Equals(searchPhrase) || value.City.Equals(searchPhrase))
+                    result[key] = value;
+            }
+            return result;
+        }
 
         /// <summary>Creates new Address Instance.</summary>
         /// <param name="arg">arg is instance Model</param>
         public void Create(Model arg)
         {
             string name = $"{arg.FirstName} {arg.LastName}";
-            if(Search(arg.FirstName).Key == null)
+            if (Search(arg.FirstName).Key == null)
+            {
                 AddressList[name]= arg;
+            }
             else
                 Console.WriteLine("Please Try new name");
         }
@@ -41,6 +53,15 @@ namespace AddressBookApp
             }
         }
 
+        /// <summary>Overload View method for view custom dictionary date.</summary>
+        public void View(Dictionary<string, Model> dict)
+        {
+            foreach (var item in dict)
+            {
+                Console.WriteLine($"{item.Key}: {item.Value}");
+            }
+        }
+
 
         /// <summary>Updates the specified search phrase.</summary>
         /// <param name="searchPhrase">The search phrase is for find item to edit.</param>
@@ -48,13 +69,13 @@ namespace AddressBookApp
         public void Update(string searchPhrase, Model arg)
         {
             var item = Search(searchPhrase);
-            if (item.Key != null)
+            if (searchPhrase != string.Empty && item.Key != null)
             {
                 if (arg.FirstName != "") item.Value.FirstName = arg.FirstName;
                 if (arg.LastName != "") item.Value.LastName = arg.LastName;
                 if (arg.Address != "") item.Value.Address = arg.Address;
                 if (arg.City != "") item.Value.City = arg.City;
-                if (arg.City != "") item.Value.State = arg.State;
+                if (arg.State != "") item.Value.State = arg.State;
                 if (arg.Zip != "") item.Value.Zip = arg.Zip;
                 if (arg.Number != "") item.Value.Number = arg.Number;
                 Console.WriteLine("\t>>>Address Updated...");

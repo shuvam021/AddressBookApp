@@ -52,21 +52,26 @@ namespace AddressBookApp
             data["number"] = Console.ReadLine();
             return data;
         }
+
+        public static void OptionsCheck()
+        {
+            Console.WriteLine("1. View all Address");
+            Console.WriteLine("2. Add Address");
+            Console.WriteLine("3. Edit Address");
+            Console.WriteLine("4. Delete Address");
+            Console.WriteLine("5. Search by Location");
+            Console.Write("Choice or E[x]it: ");
+        }
         static void Main(string[] args)
 		{
             Console.WriteLine("#########################################");
             Console.WriteLine("Hello From the Console AddressBook app!");
             Console.WriteLine("#########################################\n");
             Console.WriteLine("Select operation*");
-            Console.WriteLine("1. View all Address");
-            Console.WriteLine("2. Add Address");
-            Console.WriteLine("3. Edit Address");
-            Console.WriteLine("4. Delete Address");
-            Console.WriteLine("x. Press to exit");
-            Console.Write("Choice: ");
+            OptionsCheck();
             var userInput = Console.ReadLine();
             var addressBook = new Controller();
-            Dictionary<string, string> data = new Dictionary<string, string>();
+            var data = new Dictionary<string, string>();
             string searchPhrase;
             while (true)
             {
@@ -91,8 +96,13 @@ namespace AddressBookApp
                     case "4":
                         Console.Write("Enter First Name for deleting address: ");
                         searchPhrase = Console.ReadLine();
-                        Console.WriteLine("are you suer? [Y]es/[A]ny-key: ");
-                        if (Console.ReadLine().ToLower() == "y") addressBook.Delete(searchPhrase);
+                        Console.WriteLine("are you sure? [Y]es/[A]ny-key: ");
+                        if (Console.ReadLine()?.ToLower() == "y") addressBook.Delete(searchPhrase);
+                        break;
+                    case "5":
+                        Console.Write("Enter State/City Name for Searching address: ");
+                        searchPhrase = Console.ReadLine();
+                        addressBook.View(addressBook.SearchByLocation(searchPhrase));
                         break;
                     case "x":
                         return;
@@ -100,7 +110,7 @@ namespace AddressBookApp
                         Console.WriteLine("Select a valid option");
                         break;
                 }
-                Console.Write("Select operation: ");
+                Console.Write("Select operation or E[x]it: ");
                 userInput = Console.ReadLine();
             }
         }
