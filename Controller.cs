@@ -45,7 +45,7 @@ namespace AddressBookApp
             string name = $"{arg.FirstName} {arg.LastName}";
             if (Search(arg.FirstName).Key == null)
             {
-                AddressList[name]= arg;
+                AddressList[name] = arg;
             }
             else
                 Console.WriteLine("Please Try new name");
@@ -101,6 +101,17 @@ namespace AddressBookApp
                 Console.WriteLine("\t>>>Address Deleted...");
             }
             else Console.WriteLine("\t>>>Not found\n");
+        }
+        public void SortByName()
+        {
+            try
+            {
+                this.View(AddressList.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

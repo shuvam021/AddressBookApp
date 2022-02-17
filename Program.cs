@@ -5,7 +5,7 @@ using System.Linq;
 namespace AddressBookApp
 {
     internal class Program
-	{
+    {
         public static void TempData(Controller book)
         {
             var data1 = new Dictionary<string, string>()
@@ -61,10 +61,11 @@ namespace AddressBookApp
             Console.WriteLine("4. Delete Address");
             Console.WriteLine("5. Search by Location");
             Console.WriteLine("6. Count no. of Address(i.e. Search by Location)");
+            Console.WriteLine("7. Order by Name");
             Console.Write("Choice or E[x]it: ");
         }
         static void Main(string[] args)
-		{
+        {
             Console.WriteLine("#########################################");
             Console.WriteLine("Hello From the Console AddressBook app!");
             Console.WriteLine("#########################################\n");
@@ -110,6 +111,9 @@ namespace AddressBookApp
                         searchPhrase = Console.ReadLine();
                         Console.WriteLine(addressBook.CountContact(searchPhrase));
                         break;
+                    case "7":
+                        addressBook.SortByName();
+                        break;
                     case "x":
                         return;
                     default:
@@ -120,5 +124,5 @@ namespace AddressBookApp
                 userInput = Console.ReadLine();
             }
         }
-	}
+    }
 }
