@@ -7,6 +7,13 @@ namespace AddressBookApp
     /// <summary>Controller for Address book App. Containd all methods to perform operation</summary>
     internal class Controller
     {
+        public enum SortOptions
+        {
+            Name,
+            City,
+            State,
+            Zip
+        }
         private Dictionary<string, Model> AddressList { get; set; } = new Dictionary<string, Model>();
 
         /// <summary>Search Address book for matching first name.</summary>
@@ -102,16 +109,22 @@ namespace AddressBookApp
             }
             else Console.WriteLine("\t>>>Not found\n");
         }
-        public void SortByName()
+        public void SortByOption(SortOptions option)
         {
+            IOrderedEnumerable<KeyValuePair<string, Model>> val = AddressList.OrderBy(x => x.Key);
             try
             {
-                this.View(AddressList.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value));
+                if (option == SortOptions.Name)
+                    val = AddressList.OrderBy(x => x.Key);
+                if (option == SortOptions.City)
+                    val = AddressList.OrderBy(x => x.Value.City);
+                if (option == SortOptions.State)
+                    val = AddressList.OrderBy(x => x.Value.State);
+                if (option == SortOptions.Zip)
+                    val = AddressList.OrderBy(x => x.Value.Zip);
+                this.View(val.ToDictionary(x => x.Key, x => x.Value));
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            catch (Exception) { throw; }
         }
     }
 }

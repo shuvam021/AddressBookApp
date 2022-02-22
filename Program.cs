@@ -112,7 +112,16 @@ namespace AddressBookApp
                         Console.WriteLine(addressBook.CountContact(searchPhrase));
                         break;
                     case "7":
-                        addressBook.SortByName();
+                        Console.Write("type [n]ame, [z]ip, [s]tate, [c]ity : ");
+                        var sortOption = Console.ReadLine().ToLower();
+                        if (sortOption == "n")
+                            addressBook.SortByOption(Controller.SortOptions.Name);
+                        if (sortOption == "z")
+                            addressBook.SortByOption(Controller.SortOptions.Zip);
+                        if (sortOption == "s")
+                            addressBook.SortByOption(Controller.SortOptions.State);
+                        if (sortOption == "c")
+                            addressBook.SortByOption(Controller.SortOptions.City);
                         break;
                     case "x":
                         return;
